@@ -29,7 +29,7 @@ module.exports = authenticateToken;
 
 
 const corsOptions = {
-  origin: ['http://localhost:3000', 'https://fanciful-gumdrop-add10f.netlify.app'], // Add multiple origins here
+  origin: ['http://localhost:3000/', 'https://fanciful-gumdrop-add10f.netlify.app'], // Add multiple origins here
   optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
