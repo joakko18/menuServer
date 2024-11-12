@@ -4,7 +4,7 @@ const router = express.Router();
 const pool = require('../DB/database');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const authenticateToken = require('../index')
+const authenticateToken = require('../server')
 
 // Define the "Hello, World!" route
 router.get('/', (req, res) => {
