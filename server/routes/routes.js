@@ -484,8 +484,13 @@ router.delete('/items/:itemId', authenticateToken, async (req, res) => {
 // Route to update an item
 router.put('/updateItem', authenticateToken, async (req, res) => {
   try {
-    const { item_id, name, description } = req.body;
+    const { item_id, name, description, price } = req.body;
     const user_id = req.user.user_id; // Get user ID from the validated token
+
+    // Validate input fields
+    if (!item_id || !name || !description || price == null) {
+      return res.status(400).json({ message: 'Missing required fields' });
+    }
 
     // Check if the item belongs to the logged-in user by verifying its category and menu
     const item = await pool.query(
@@ -499,8 +504,8 @@ router.put('/updateItem', authenticateToken, async (req, res) => {
 
     // Update the item in the database
     const updatedItem = await pool.query(
-      'UPDATE items SET name = $1, description = $2 WHERE item_id = $3 RETURNING *',
-      [name, description, item_id]
+      'UPDATE items SET name = $1, description = $2, price = $3 WHERE item_id = $4 RETURNING *',
+      [name, description, price, item_id]
     );
 
     res.json(updatedItem.rows[0]);
