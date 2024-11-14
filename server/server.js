@@ -29,7 +29,7 @@ module.exports = authenticateToken;
 
 
 const corsOptions = {
-  origin: ['https://snazzy-choux-bf4697.netlify.app/', 'https://fanciful-gumdrop-add10f.netlify.app'], // Add multiple origins here
+  origin: ['https://snazzy-choux-bf4697.netlify.app', 'https://fanciful-gumdrop-add10f.netlify.app'], // Add multiple origins here
   optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
