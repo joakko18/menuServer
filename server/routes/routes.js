@@ -660,14 +660,21 @@ router.get('/tasks', authenticateToken, async (req, res) => {
     res.status(500).send('Server error');
   }
 });
-
-// Route to update task status
+//route to change status
 router.put('/tasks/:id', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
     const user_id = req.user.user_id;
     
+    console.log(`Received status update for task ${id} to ${status}`); // Debug log
+
+    // Check if the status is one of the valid statuses
+    const validStatuses = [ 'completed', 'cancelled'];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ message: `Invalid status: ${status}` });
+    }
+
     // Update task status for the authenticated user
     const updatedTask = await pool.query(
       'UPDATE tasks SET status = $1 WHERE task_id = $2 AND user_id = $3 RETURNING *',
@@ -701,7 +708,7 @@ router.delete('/tasks/:task_id', authenticateToken, async (req, res) => {
     const task = taskResult.rows[0];
 
     // Check if the task status is 'cancel' or 'completed'
-    if (task.status !== 'cancel' && task.status !== 'completed') {
+    if (task.status !== 'cancelled' && task.status !== 'completed') {
       return res.status(400).json({ message: 'Only tasks with status "cancel" or "completed" can be deleted' });
     }
 
